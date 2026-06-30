@@ -1,0 +1,540 @@
+{
+  "name": "Бот-визитка",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "id": "183f0dd7-3527-4330-857f-167299732a4c",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        272
+      ],
+      "webhookId": "vizitka-bot-001",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ($json.message?.text || $json.callback_query?.data || '') }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "eb7cc262-d212-48cf-8c28-59091fd59242"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ($json.message?.text || $json.callback_query?.data || '') }}",
+                    "rightValue": "/services",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a0128184-68a8-4e61-8052-3188da466836"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "services"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ($json.message?.text || $json.callback_query?.data || '') }}",
+                    "rightValue": "/portfolio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "715cde69-e31b-494b-be5c-502a8d2fc6f9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "portfolio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ ($json.message?.text || $json.callback_query?.data || '') }}",
+                    "rightValue": "/contact",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fa29d454-caa6-498b-a64a-80a2cd75c041"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "contact"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "82713258-9eaa-44d9-b6c9-e32c7eb73574",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        96,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "👋 Привет! Я помогу вам узнать об услугах по автоматизации бизнеса.\n\n💬 Можете задать любой вопрос прямо здесь — я отвечу.\n\n*Или выберите раздел:*",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🛠 Услуги",
+                    "additionalFields": {
+                      "callback_data": "/services"
+                    }
+                  },
+                  {
+                    "text": "💰 Стоимость",
+                    "additionalFields": {
+                      "callback_data": "/portfolio"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📢 Мой канал",
+                    "additionalFields": {
+                      "url": "https://t.me/andr_neuromaster"
+                    }
+                  },
+                  {
+                    "text": "✍️ Написать мне",
+                    "additionalFields": {
+                      "url": "https://t.me/Andr5579"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "1964bd1c-487c-478c-9177-a4b19119eb57",
+      "name": "Send Welcome",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        48
+      ],
+      "webhookId": "41fab2c6-efb4-4e6a-a110-ae8c4813c311",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "🤖 *Telegram-боты*\n✅ Приём заявок и сбор контактов 24/7\n✅ Мгновенные уведомления о новом клиенте\n✅ Сохранение данных в Google таблицу\n✅ Бронирование, запись, ответы на вопросы\n\n🌐 *Сайты и лендинги*\n✅ Готово за 3–5 дней\n✅ Форма заявки, прайс, отзывы, карта\n✅ Адаптирован под телефон и компьютер\n\n📱 *Мобильные приложения*\n✅ Иконка на рабочем столе без App Store\n✅ Запись, каталог услуг, форма заявки\n\n⚙️ *Автоматизация бизнес-процессов*\n✅ Автопостинг в Telegram, VK по расписанию\n✅ Уведомления, напоминания, интеграции\n\n💬 Первая консультация — бесплатно. Обсудим задачу за 15 минут.",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🛠 Услуги",
+                    "additionalFields": {
+                      "callback_data": "/services"
+                    }
+                  },
+                  {
+                    "text": "💰 Стоимость",
+                    "additionalFields": {
+                      "callback_data": "/portfolio"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📢 Мой канал",
+                    "additionalFields": {
+                      "url": "https://t.me/andr_neuromaster"
+                    }
+                  },
+                  {
+                    "text": "✍️ Написать мне",
+                    "additionalFields": {
+                      "url": "https://t.me/Andr5579"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "86832db6-e85f-4a1e-bc95-941bc4c5a1aa",
+      "name": "Send Services",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        192
+      ],
+      "webhookId": "e26b1ac7-b01c-4fdb-bab6-5efdc7c5ad75",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "💰 *Стоимость услуг*\n\n🤖 *Чат-бот базовый — от 2 000 ₽*\nСобирает контакты, принимает заявки и записи\n\n🧠 *Чат-бот с ИИ — от 5 000 ₽*\nПерсональный менеджер 24/7 — консультирует, продаёт, отвечает как живой человек\n\n🌐 *Сайт / лендинг — от 5 000 ₽*\nГотово за 3–5 дней\n\n📱 *Мобильное приложение — от 10 000 ₽*\n\n💬 Первая консультация — бесплатно. Напишите задачу — рассчитаю точно.",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🛠 Услуги",
+                    "additionalFields": {
+                      "callback_data": "/services"
+                    }
+                  },
+                  {
+                    "text": "💰 Стоимость",
+                    "additionalFields": {
+                      "callback_data": "/portfolio"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📢 Мой канал",
+                    "additionalFields": {
+                      "url": "https://t.me/andr_neuromaster"
+                    }
+                  },
+                  {
+                    "text": "✍️ Написать мне",
+                    "additionalFields": {
+                      "url": "https://t.me/Andr5579"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "75cb56fc-7c3c-40e2-a155-5d07189fea5c",
+      "name": "Send Portfolio",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        336
+      ],
+      "webhookId": "4fe77483-85e5-41db-be20-39b3201bddec",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "📝 *Оставить заявку*\n\nОтправьте сообщение в формате:\n\n*Имя:* Ваше имя\n*Телефон:* +7...\n*Задача:* Коротко опишите что нужно\n\nИли напишите своими словами — разберёмся 😊\n\nОтвечу в течение нескольких часов.\nПервая консультация — бесплатно.",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🛠 Услуги",
+                    "additionalFields": {
+                      "callback_data": "/services"
+                    }
+                  },
+                  {
+                    "text": "💰 Стоимость",
+                    "additionalFields": {
+                      "callback_data": "/portfolio"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📢 Мой канал",
+                    "additionalFields": {
+                      "url": "https://t.me/andr_neuromaster"
+                    }
+                  },
+                  {
+                    "text": "✍️ Написать мне",
+                    "additionalFields": {
+                      "url": "https://t.me/Andr5579"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "ba4b63e4-64d1-434e-ae32-802b458afd2b",
+      "name": "Send Contact",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        480
+      ],
+      "webhookId": "3de7d014-8511-458f-b019-6bed3b6b7c25",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Ты — вежливый профессиональный помощник. Отвечаешь от лица исполнителя услуг по автоматизации бизнеса. Отвечай кратко, по делу, на русском языке. Без markdown.\\n\\nУСЛУГИ И НАЧАЛЬНЫЕ ЦЕНЫ:\\n\\nTelegram-боты — от 2 000 ₽\\n- Приём заявок и сбор контактов 24/7\\n- Уведомления владельцу о новом клиенте\\n- Сохранение данных в Google таблицу\\n- Бронирование, запись, ответы на вопросы\\n- Боты для интернет-магазинов\\n\\nСайты и лендинги — от 3 000 ₽\\n- Готово за 3-5 дней\\n- Форма заявки, прайс, отзывы, карта\\n- Адаптивный дизайн (телефон и компьютер)\\n\\nМобильные приложения — от 5 000 ₽\\n- Иконка на рабочем столе без App Store\\n- Запись, каталог услуг, форма заявки\\n\\nАвтоматизация бизнес-процессов — цена по запросу\\n- Автопостинг в Telegram и VK по расписанию\\n- Уведомления, напоминания, интеграции\\n\\nДЛЯ КОГО: салоны красоты, клиники, фитнес, рестораны, доставка, мастера, любой малый бизнес.\\n\\nКАК РАБОТАЕТ: клиент описывает задачу → обсуждаем 15 минут → готово и работает. Первая консультация бесплатно. IT-образование, опыт в автоматизации, работаю удалённо.\\n\\nПРАВИЛА ОТВЕТОВ:\\n- На вопрос о цене: называй начальную цену из прайса и добавляй: Окончательная стоимость определяется после обсуждения задачи. Напишите @Andr5579 — первая консультация бесплатно.\\n- На вопрос не по теме: вежливо верни к услугам\\n- Если клиент заинтересован: предложи написать /contact\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"={{ $json.message?.text || $json.callback_query?.data }}\"\n    }\n  ],\n  \"max_tokens\": 500,\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "id": "4a7a4779-4dfa-4c14-ba95-0af119ba9ebc",
+      "name": "Groq AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        336,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message?.chat?.id || $('Telegram Trigger').item.json.callback_query?.message?.chat?.id }}",
+        "text": "={{ $json.choices[0].message.content }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "ecc07b2f-94c7-4f0a-a2de-e1595bb6ba24",
+      "name": "Send AI Response",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        624
+      ],
+      "webhookId": "8e392a66-842c-49b9-b298-42619f8949a6",
+      "credentials": {
+        "telegramApi": {
+          "id": "mxVtvVQE0HHCIyZF",
+          "name": "Мой бот визитка"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Services",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Portfolio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Groq AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq AI": {
+      "main": [
+        [
+          {
+            "node": "Send AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "87ba185c-606c-47cf-8199-cba09a63184f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f5ac17c6d93363c48c9209501ea70a94368b8be11341024caa43dabb53eae1ec"
+  },
+  "nodeGroups": [],
+  "id": "Nc6BWEba120CXqhj",
+  "tags": []
+}
